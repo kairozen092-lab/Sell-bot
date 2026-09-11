@@ -1,0 +1,43 @@
+services:
+  - type: worker
+    name: kairozen-sell-bot
+    env: python
+    plan: starter
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    startCommand: python sell_smm_bot.py
+    autoDeploy: true
+    disk:
+      name: kairozen-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      # --- ចាំបាច់ (Required — set in Render dashboard, not in repo) ---
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_ID
+        sync: false
+      - key: PANEL_URL
+        sync: false
+      - key: BAKONG_ID
+        sync: false
+
+      # --- Persistent disk paths (កុំកែ) ---
+      - key: INSTANCES_DIR
+        value: /var/data/instances
+      - key: DB_FILE
+        value: /var/data/sell_bot_db.json
+
+      # --- ស្រេចចិត្ត (Optional — has sane defaults) ---
+      - key: PRICE_USD
+        value: "0.75"
+      - key: SHOP_BOT_SCRIPT
+        value: kairozen_shop_bot.py
+      - key: BAKONG_NAME
+        value: Kairozen
+      - key: BAKONG_CITY
+        value: Phnom Penh
+      - key: BAKONG_CURRENCY
+        value: USD
+      - key: BAKONG_TOKEN
+        sync: false
